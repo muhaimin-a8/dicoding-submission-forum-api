@@ -5,9 +5,11 @@ describe('a AddThread entities', () => {
     // Arrange
     const payload1 = {
       title: 'new thread',
+      body: 'new thread body',
     };
     const payload2 = {
       body: 'new thread body',
+      owner: 'user-123',
     };
 
     // Action and Assert
@@ -20,14 +22,17 @@ describe('a AddThread entities', () => {
     const payload1 = {
       title: 'new thread',
       body: [],
+      owner: 'user-123',
     };
     const payload2 = {
       title: 'new thread',
-      body: {},
+      body: 'new thread body',
+      owner: {},
     };
     const payload3 = {
       title: true,
       body: 'new thread body',
+      owner: 'user-123',
     };
 
     // Action and Assert
@@ -41,6 +46,7 @@ describe('a AddThread entities', () => {
     const payload = {
       title: 'new thread'.repeat(100),
       body: 'new thread body',
+      owner: 'user-123',
     };
 
     // Action and Assert
@@ -52,13 +58,15 @@ describe('a AddThread entities', () => {
     const payload = {
       title: 'new thread',
       body: 'new thread body',
+      owner: 'user-123',
     };
 
     // Action
-    const {title, body} = new AddThread(payload);
+    const {title, body, owner} = new AddThread(payload);
 
     // Assert
     expect(title).toEqual(payload.title);
     expect(body).toEqual(payload.body);
+    expect(owner).toEqual(payload.owner);
   });
 });
