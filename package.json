@@ -11,7 +11,8 @@
     "test:watch": "jest --watchAll --coverage --setupFiles dotenv/config -i",
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate -f config/database/test.json",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix"
   },
   "keywords": [],
   "author": "",
@@ -27,9 +28,8 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
-    "eslint": "^8.28.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0",
+    "eslint": "^8.30.0",
+    "eslint-config-google": "^0.14.0",
     "jest": "^27.0.6",
     "node-pg-migrate": "^5.10.0",
     "nodemon": "^2.0.9"

@@ -170,7 +170,7 @@ describe('/authentications endpoint', () => {
           password: 'secret',
         },
       });
-      const { data: { refreshToken } } = JSON.parse(loginResponse.payload);
+      const {data: {refreshToken}} = JSON.parse(loginResponse.payload);
 
       // Action
       const response = await server.inject({
@@ -246,7 +246,7 @@ describe('/authentications endpoint', () => {
     it('should return 400 if refresh token not registered in database', async () => {
       // Arrange
       const server = await createServer(container);
-      const refreshToken = await container.getInstance(AuthenticationTokenManager.name).createRefreshToken({ username: 'dicoding' });
+      const refreshToken = await container.getInstance(AuthenticationTokenManager.name).createRefreshToken({username: 'dicoding'});
 
       // Action
       const response = await server.inject({

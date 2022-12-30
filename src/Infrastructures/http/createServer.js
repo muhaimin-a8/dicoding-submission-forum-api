@@ -13,17 +13,17 @@ const createServer = async (container) => {
   await server.register([
     {
       plugin: users,
-      options: { container },
+      options: {container},
     },
     {
       plugin: authentications,
-      options: { container },
+      options: {container},
     },
   ]);
 
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
-    const { response } = request;
+    const {response} = request;
 
     if (response instanceof Error) {
       // bila response tersebut error, tangani sesuai kebutuhan

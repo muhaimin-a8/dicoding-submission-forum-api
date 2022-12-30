@@ -10,8 +10,8 @@ describe('RefreshAuthenticationUseCase', () => {
 
     // Action & Assert
     await expect(refreshAuthenticationUseCase.execute(useCasePayload))
-      .rejects
-      .toThrowError('REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
+        .rejects
+        .toThrowError('REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
   });
 
   it('should throw error if refresh token not string', async () => {
@@ -23,8 +23,8 @@ describe('RefreshAuthenticationUseCase', () => {
 
     // Action & Assert
     await expect(refreshAuthenticationUseCase.execute(useCasePayload))
-      .rejects
-      .toThrowError('REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
+        .rejects
+        .toThrowError('REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should orchestrating the refresh authentication action correctly', async () => {
@@ -36,13 +36,13 @@ describe('RefreshAuthenticationUseCase', () => {
     const mockAuthenticationTokenManager = new AuthenticationTokenManager();
     // Mocking
     mockAuthenticationRepository.checkAvailabilityToken = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve());
     mockAuthenticationTokenManager.verifyRefreshToken = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve());
     mockAuthenticationTokenManager.decodePayload = jest.fn()
-      .mockImplementation(() => Promise.resolve({ username: 'dicoding', id: 'user-123' }));
+        .mockImplementation(() => Promise.resolve({username: 'dicoding', id: 'user-123'}));
     mockAuthenticationTokenManager.createAccessToken = jest.fn()
-      .mockImplementation(() => Promise.resolve('some_new_access_token'));
+        .mockImplementation(() => Promise.resolve('some_new_access_token'));
     // Create the use case instace
     const refreshAuthenticationUseCase = new RefreshAuthenticationUseCase({
       authenticationRepository: mockAuthenticationRepository,
@@ -54,13 +54,13 @@ describe('RefreshAuthenticationUseCase', () => {
 
     // Assert
     expect(mockAuthenticationTokenManager.verifyRefreshToken)
-      .toBeCalledWith(useCasePayload.refreshToken);
+        .toBeCalledWith(useCasePayload.refreshToken);
     expect(mockAuthenticationRepository.checkAvailabilityToken)
-      .toBeCalledWith(useCasePayload.refreshToken);
+        .toBeCalledWith(useCasePayload.refreshToken);
     expect(mockAuthenticationTokenManager.decodePayload)
-      .toBeCalledWith(useCasePayload.refreshToken);
+        .toBeCalledWith(useCasePayload.refreshToken);
     expect(mockAuthenticationTokenManager.createAccessToken)
-      .toBeCalledWith({ username: 'dicoding', id: 'user-123' });
+        .toBeCalledWith({username: 'dicoding', id: 'user-123'});
     expect(accessToken).toEqual('some_new_access_token');
   });
 });
