@@ -5,9 +5,11 @@ describe('a AddComment entities', () => {
     // Arrange
     const payload1 = {
       content: 'sebuah comment',
+      thread: 'thread-123',
     };
 
     const payload2 = {
+      content: 'sebuah comment',
       owner: 'user-123',
     };
 
@@ -20,11 +22,13 @@ describe('a AddComment entities', () => {
     // Arrange
     const payload1 = {
       content: 123,
+      thread: 'thread-123',
       owner: 'dicoding',
     };
 
     const payload2 = {
       content: 'sebuah comment',
+      thread: 'thread-123',
       owner: {},
     };
 
@@ -37,6 +41,7 @@ describe('a AddComment entities', () => {
     // Arrange
     const payload = {
       content: 'sebuah comment'.repeat(1500),
+      thread: 'thread-123',
       owner: 'dicoding',
     };
 
@@ -48,6 +53,7 @@ describe('a AddComment entities', () => {
     // Arrange
     const payload = {
       content: 'sebuah comment',
+      thread: 'thread-123',
       owner: 'dicoding',
     };
 
@@ -56,6 +62,7 @@ describe('a AddComment entities', () => {
 
     // Assert
     expect(addComment.content).toEqual(payload.content);
+    expect(addComment.thread).toEqual(payload.thread);
     expect(addComment.owner).toEqual(payload.owner);
   });
 });
