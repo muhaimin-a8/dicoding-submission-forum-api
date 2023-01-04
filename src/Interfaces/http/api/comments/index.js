@@ -1,10 +1,10 @@
-const CommentsHandler = require('./handler');
+const RepliesHandler = require('./handler');
 const routes = require('./routes');
 
 module.exports = {
-  name: 'comments',
+  name: 'replies',
   register: async (server, {container}) => {
-    const commentsHandler = new CommentsHandler(container);
-    server.route(routes(commentsHandler));
+    const repliesHandler = new RepliesHandler(container);
+    server.route(routes(repliesHandler));
   },
 };
