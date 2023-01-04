@@ -2,6 +2,7 @@ const CommentRepository = require('../../Domains/comments/CommentRepository');
 const AddedComment = require('../../Domains/comments/entities/AddedComment');
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+const GetDetailComment = require('../../Domains/comments/entities/GetDetailComment');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -54,6 +55,20 @@ class CommentRepositoryPostgres extends CommentRepository {
     };
 
     await this._pool.query(query);
+  }
+
+  async getDetailCommentsByThreadId(threadId) {
+    const query = {
+      text: `SELECT c.id, c.content, u.username, c.is_deleted, c.updated_at FROM comments c JOIN users u ON c.owner = u.id WHERE thread = $1`,
+      values: [threadId],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows.map((comment) => {
+      comment.updated_at = comment.updated_at.toISOString();
+      return new GetDetailComment(comment);
+    });
   }
 }
 

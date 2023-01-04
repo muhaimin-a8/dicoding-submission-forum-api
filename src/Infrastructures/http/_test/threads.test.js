@@ -212,4 +212,135 @@ describe('/threads endpoint', () => {
       expect(responseAddThreadJson.data.addedThread.title).toEqual(requestAddThreadPayload.title);
     });
   });
+
+  describe('GET /threads/{threadId}', () => {
+    it('should response 404 when thread not found', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/thread-123',
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('thread tidak ditemukan');
+    });
+
+    it('should response 200 and thread detail', async () => {
+      // Arrange
+      const requestAuthPayload1 = {
+        username: 'dicoding',
+        password: 'secret',
+      };
+      const requestAuthPayload2 = {
+        username: 'dicoding2',
+        password: 'supersecret',
+      };
+      const requestAddThreadPayload = {
+        title: 'new thread',
+        body: 'new thread body',
+      };
+      const requestAddCommentPayload = {
+        content: 'new comment',
+      };
+      const server = await createServer(container);
+
+      /* adding user */
+      await server.inject({
+        method: 'POST',
+        url: '/users',
+        payload: {
+          username: requestAuthPayload1.username,
+          password: requestAuthPayload1.password,
+          fullname: 'Dicoding Indonesia',
+        },
+      });
+      await server.inject({
+        method: 'POST',
+        url: '/users',
+        payload: {
+          username: requestAuthPayload2.username,
+          password: requestAuthPayload2.password,
+          fullname: 'Dicoding Indonesia',
+        },
+      });
+
+      // Action
+      /* login */
+      const responseAuth1 = await server.inject({
+        method: 'POST',
+        url: '/authentications',
+        payload: requestAuthPayload1,
+      });
+      const responseAuthJson1 = JSON.parse(responseAuth1.payload);
+      const responseAuth2 = await server.inject({
+        method: 'POST',
+        url: '/authentications',
+        payload: requestAuthPayload2,
+      });
+      const responseAuthJson2 = JSON.parse(responseAuth2.payload);
+      /* adding thread */
+      const responseAddThread = await server.inject({
+        method: 'POST',
+        url: '/threads',
+        payload: requestAddThreadPayload,
+        headers: {
+          Authorization: `Bearer ${responseAuthJson1.data.accessToken}`,
+        },
+      });
+      const responseAddThreadJson = JSON.parse(responseAddThread.payload);
+      const threadId = responseAddThreadJson.data.addedThread.id;
+      /* adding comment */
+      const responseAddComment = await server.inject({
+        method: 'POST',
+        url: `/threads/${threadId}/comments`,
+        payload: requestAddCommentPayload,
+        headers: {
+          // use access token from user 1
+          Authorization: `Bearer ${responseAuthJson1.data.accessToken}`,
+        },
+      });
+      await server.inject({
+        method: 'POST',
+        url: `/threads/${threadId}/comments`,
+        payload: requestAddCommentPayload,
+        headers: {
+          // use access token from user 2
+          Authorization: `Bearer ${responseAuthJson2.data.accessToken}`,
+        },
+      });
+
+      const responseAddCommentJson = JSON.parse(responseAddComment.payload);
+
+      /* deleting comment */
+      await server.inject({
+        method: 'DELETE',
+        url: `/threads/${threadId}/comments/${responseAddCommentJson.data.addedComment.id}`,
+        headers: {
+          // use access token from user 2
+          Authorization: `Bearer ${responseAuthJson1.data.accessToken}`,
+        },
+      });
+      /* getting thread detail */
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.id).toEqual(responseAddThreadJson.data.addedThread.id);
+      expect(responseJson.data.thread.title).toEqual(requestAddThreadPayload.title);
+      expect(responseJson.data.thread.comments).toBeDefined();
+      expect(responseJson.data.thread.comments.length).toEqual(2);
+    });
+  });
 });
