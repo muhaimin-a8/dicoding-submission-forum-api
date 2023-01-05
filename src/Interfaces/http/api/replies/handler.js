@@ -28,24 +28,19 @@ class RepliesHandler {
   }
 
   async deleteReplyHandler(request, h) {
-    try {
-      const deleteReplyUseCase = this._container.getInstance(DeleteReplyUseCase.name);
-      const useCasePayload = {
-        id: request.params.replyId,
-        owner: request.auth.credentials.id,
-        comment: request.params.commentId,
-        thread: request.params.threadId,
-      };
+    const deleteReplyUseCase = this._container.getInstance(DeleteReplyUseCase.name);
+    const useCasePayload = {
+      id: request.params.replyId,
+      owner: request.auth.credentials.id,
+      comment: request.params.commentId,
+      thread: request.params.threadId,
+    };
 
-      await deleteReplyUseCase.execute(useCasePayload);
+    await deleteReplyUseCase.execute(useCasePayload);
 
-      return h.response({
-        status: 'success',
-      }).code(200);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+    return h.response({
+      status: 'success',
+    }).code(200);
   }
 }
 

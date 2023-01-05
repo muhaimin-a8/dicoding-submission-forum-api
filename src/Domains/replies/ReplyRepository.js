@@ -10,6 +10,10 @@ class ReplyRepository {
   async softDeleteReplyById(id) {
     throw new Error('REPLIES_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
+
+  async getDetailReplyByCommentId(id) {
+    throw new Error('REPLIES_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = ReplyRepository;

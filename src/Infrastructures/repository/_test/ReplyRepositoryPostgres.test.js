@@ -123,5 +123,30 @@ describe('ReplyRepositoryPostgres', () => {
         })).rejects.toThrowError(AuthorizationError);
       });
     });
+
+    describe('getDetailReplyByCommentId function', () => {
+      it('should return detail reply by comment id correctly', async () => {
+        // Arrange
+        const addReply = new AddReply({
+          content: 'reply content',
+          owner: 'user-123',
+          comment: 'comment-123',
+          thread: 'thread-123',
+        });
+        const fakeIdGenerator = () => '123';
+        const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+        await replyRepositoryPostgres.addReply(addReply);
+
+        // Action
+        const detailReply = await replyRepositoryPostgres.getDetailReplyByCommentId('comment-123');
+
+        // Assert
+        expect(detailReply).toHaveLength(1);
+        expect(detailReply[0].id).toBeDefined();
+        expect(detailReply[0].content).toBeDefined();
+        expect(detailReply[0].username).toBeDefined();
+        expect(detailReply[0].date).toBeDefined();
+      });
+    });
   });
 });

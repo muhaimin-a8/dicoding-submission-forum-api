@@ -28,6 +28,8 @@ DomainErrorTranslator._directories = {
   'ADD_REPLY.CONTENT_LIMIT_CHAR': new InvariantError('tidak dapat membuat reply baru karena karakter content melebihi batas limit'),
   'DELETE_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat menghapus reply karena properti yang dibutuhkan tidak ada'),
   'DELETE_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat menghapus reply karena tipe data tidak sesuai'),
+  'GET_DETAIL_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat mendapatkan detail reply karena properti yang dibutuhkan tidak ada'),
+  'GET_DETAIL_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat mendapatkan detail reply karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;

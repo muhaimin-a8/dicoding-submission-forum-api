@@ -2,6 +2,7 @@ const ReplyRepository = require('../../Domains/replies/ReplyRepository');
 const AddedReply = require('../../Domains/replies/entities/AddedReply');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
+const GetDetailReply = require('../../Domains/replies/entities/GetDetailReply');
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {
@@ -56,6 +57,20 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     };
 
     await this._pool.query(query);
+  }
+
+  async getDetailReplyByCommentId(id) {
+    const query = {
+      text: 'SELECT r.id, r.content, u.username, r.is_deleted, r.updated_at FROM replies r JOIN users u ON r.owner = u.id WHERE r.comment = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows.map((reply) => {
+      reply.updated_at = reply.updated_at.toISOString();
+      return new GetDetailReply(reply);
+    });
   }
 }
 

@@ -305,7 +305,7 @@ describe('/threads endpoint', () => {
           Authorization: `Bearer ${responseAuthJson1.data.accessToken}`,
         },
       });
-      await server.inject({
+      const responseAddComment2 = await server.inject({
         method: 'POST',
         url: `/threads/${threadId}/comments`,
         payload: requestAddCommentPayload,
@@ -316,13 +316,27 @@ describe('/threads endpoint', () => {
       });
 
       const responseAddCommentJson = JSON.parse(responseAddComment.payload);
+      const responseAddCommentJson2 = JSON.parse(responseAddComment2.payload);
+
+      /* adding reply */
+      await server.inject({
+        method: 'POST',
+        url: `/threads/${threadId}/comments/${responseAddCommentJson2.data.addedComment.id}/replies`,
+        payload: {
+          content: 'new reply',
+        },
+        headers: {
+          // use access token from user 1
+          Authorization: `Bearer ${responseAuthJson1.data.accessToken}`,
+        },
+      });
 
       /* deleting comment */
       await server.inject({
         method: 'DELETE',
         url: `/threads/${threadId}/comments/${responseAddCommentJson.data.addedComment.id}`,
         headers: {
-          // use access token from user 2
+          // use access token from user 1
           Authorization: `Bearer ${responseAuthJson1.data.accessToken}`,
         },
       });
@@ -341,6 +355,11 @@ describe('/threads endpoint', () => {
       expect(responseJson.data.thread.title).toEqual(requestAddThreadPayload.title);
       expect(responseJson.data.thread.comments).toBeDefined();
       expect(responseJson.data.thread.comments.length).toEqual(2);
+      expect(responseJson.data.thread.comments[0].replies.length).toEqual(1);
+      expect(responseJson.data.thread.comments[0].replies[0].id).toBeDefined();
+      expect(responseJson.data.thread.comments[0].replies[0].content).toBeDefined();
+      expect(responseJson.data.thread.comments[0].replies[0].date).toBeDefined();
+      expect(responseJson.data.thread.comments[0].replies[0].username).toBeDefined();
     });
   });
 });
