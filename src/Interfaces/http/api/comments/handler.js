@@ -1,29 +1,43 @@
-const AddReplyUseCase = require('../../../../Applications/use_case/replies/AddReplyUseCase');
+const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentUseCase');
+const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
 
-class RepliesHandler {
+class CommentsHandler {
   constructor(container) {
     this._container = container;
 
-    this.postReplyHandler = this.postReplyHandler.bind(this);
+    this.postCommentHandler = this.postCommentHandler.bind(this);
+    this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
   }
 
-  async postReplyHandler(request, h) {
-    const addReplyUseCase = this._container.getInstance(AddReplyUseCase.name);
-    const useCasePayload = {
+  async postCommentHandler(request, h) {
+    const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
+
+    const addedComment = await addCommentUseCase.execute({
       content: request.payload.content,
-      owner: request.auth.credentials.id,
       thread: request.params.threadId,
-      comment: request.params.commentId,
-    };
-    const addedReply = await addReplyUseCase.execute(useCasePayload);
+      owner: request.auth.credentials.id,
+    });
 
     return h.response({
       status: 'success',
       data: {
-        addedReply,
+        addedComment,
       },
     }).code(201);
   }
+
+  async deleteCommentHandler(request, h) {
+    const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
+    await deleteCommentUseCase.execute({
+      id: request.params.commentId,
+      owner: request.auth.credentials.id,
+      thread: request.params.threadId,
+    });
+
+    return h.response({
+      status: 'success',
+    }).code(200);
+  }
 }
 
-module.exports = RepliesHandler;
+module.exports = CommentsHandler;
