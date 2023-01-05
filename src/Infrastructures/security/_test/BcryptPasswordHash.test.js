@@ -26,8 +26,8 @@ describe('BcryptEncryptionHelper', () => {
 
       // Act & Assert
       await expect(bcryptEncryptionHelper.comparePassword('plain_password', 'encrypted_password'))
-        .rejects
-        .toThrow(AuthenticationError);
+          .rejects
+          .toThrow(AuthenticationError);
     });
 
     it('should not return AuthenticationError if password match', async () => {
@@ -38,7 +38,7 @@ describe('BcryptEncryptionHelper', () => {
 
       // Act & Assert
       await expect(bcryptEncryptionHelper.comparePassword(plainPassword, encryptedPassword))
-        .resolves.not.toThrow(AuthenticationError);
+          .resolves.not.toThrow(AuthenticationError);
     });
   });
 });

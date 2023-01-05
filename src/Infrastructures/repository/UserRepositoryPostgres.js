@@ -23,7 +23,7 @@ class UserRepositoryPostgres extends UserRepository {
   }
 
   async addUser(registerUser) {
-    const { username, password, fullname } = registerUser;
+    const {username, password, fullname} = registerUser;
     const id = `user-${this._idGenerator()}`;
 
     const query = {
@@ -33,7 +33,7 @@ class UserRepositoryPostgres extends UserRepository {
 
     const result = await this._pool.query(query);
 
-    return new RegisteredUser({ ...result.rows[0] });
+    return new RegisteredUser({...result.rows[0]});
   }
 
   async getPasswordByUsername(username) {
@@ -63,7 +63,7 @@ class UserRepositoryPostgres extends UserRepository {
       throw new InvariantError('user tidak ditemukan');
     }
 
-    const { id } = result.rows[0];
+    const {id} = result.rows[0];
 
     return id;
   }

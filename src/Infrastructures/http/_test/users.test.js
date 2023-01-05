@@ -130,7 +130,7 @@ describe('/users endpoint', () => {
 
     it('should response 400 when username unavailable', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({ username: 'dicoding' });
+      await UsersTableTestHelper.addUser({username: 'dicoding'});
       const requestPayload = {
         username: 'dicoding',
         fullname: 'Dicoding Indonesia',
