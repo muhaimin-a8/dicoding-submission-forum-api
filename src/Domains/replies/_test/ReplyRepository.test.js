@@ -7,5 +7,7 @@ describe('RepliesRepository interface', () => {
 
     // Action and Assert
     await expect(replyRepository.addReplyByCommentId('')).rejects.toThrowError('REPLIES_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+    await expect(replyRepository.verifyReplyOwner({})).rejects.toThrowError('REPLIES_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+    await expect(replyRepository.softDeleteReplyById('')).rejects.toThrowError('REPLIES_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   });
 });
