@@ -16,7 +16,7 @@ class GetDetailThread {
       throw new Error('GET_DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof id !== 'string' || typeof title !== 'string' || typeof body !== 'string' || typeof username !== 'string' || typeof updated_at !== 'string') {
+    if (typeof id !== 'string' || typeof title !== 'string' || typeof body !== 'string' || typeof username !== 'string' || !(updated_at instanceof Date)) {
       throw new Error('GET_DETAIL_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }

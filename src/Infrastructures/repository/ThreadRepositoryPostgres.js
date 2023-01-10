@@ -43,7 +43,6 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     };
 
     const result = await this._pool.query(query);
-    result.rows[0].updated_at = new Date(result.rows[0].updated_at).toISOString();
 
     return new GetDetailThread({...result.rows[0]});
   }

@@ -1,5 +1,5 @@
-const CommentRepository = require('../../../Domains/comments/CommentRepository');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const DeleteCommentUseCase = require('../DeleteCommentUseCase');
 describe('DeleteCommentUseCase', () => {
   it('should orchestrating the delete comment action correctly', async () => {

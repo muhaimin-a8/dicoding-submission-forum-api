@@ -1,6 +1,6 @@
-const AddThread = require('../../../Domains/threads/entities/AddThread');
-const AddedThread = require('../../../Domains/threads/entities/AddedThread');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const AddThread = require('../../../../Domains/threads/entities/AddThread');
+const AddedThread = require('../../../../Domains/threads/entities/AddedThread');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const AddThreadUseCase = require('../AddThreadUseCase');
 
 describe('AddThreadUseCase', () => {
@@ -22,7 +22,11 @@ describe('AddThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
 
     /** mocking needed function */
-    mockThreadRepository.addThread = jest.fn().mockImplementation(() => Promise.resolve(expectedAddedThread));
+    mockThreadRepository.addThread = jest.fn().mockImplementation(() => Promise.resolve(new AddedThread({
+      id: 'thread-123',
+      title: useCasePayload.title,
+      owner: useCasePayload.owner,
+    })));
 
     const addThreadUseCase = new AddThreadUseCase({
       threadRepository: mockThreadRepository,

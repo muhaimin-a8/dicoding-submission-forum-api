@@ -8,14 +8,20 @@ class GetDetailThreadUseCase {
   async execute(threadId) {
     await this._threadRepository.verifyAvailableThreadById(threadId);
     const thread = await this._threadRepository.getDetailThreadById(threadId);
-    const comments = await this._commentRepository.getDetailCommentsByThreadId(threadId);
+    const commentsNotMapped = await this._commentRepository.getDetailCommentsByThreadId(threadId);
+    const comments = commentsNotMapped.map((comment) => {
+      return {...comment};
+    });
     const result = {
       ...thread,
       comments,
     };
 
     for (let i = 0; i < result.comments.length; i++) {
-      result.comments[i].replies = await this._replyRepository.getDetailReplyByCommentId(result.comments[i].id);
+      const repliesNotMapped = await this._replyRepository.getDetailReplyByCommentId(result.comments[i].id);
+      result.comments[i].replies = repliesNotMapped.map((reply) => {
+        return {...reply};
+      });
     }
     return result;
   }
