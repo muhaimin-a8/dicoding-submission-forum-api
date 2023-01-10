@@ -67,10 +67,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(query);
 
-    return result.rows.map((reply) => {
-      reply.updated_at = reply.updated_at.toISOString();
-      return new GetDetailReply(reply);
-    });
+    return result.rows.map((reply) => new GetDetailReply(reply));
   }
 }
 

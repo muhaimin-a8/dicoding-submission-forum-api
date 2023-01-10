@@ -7,6 +7,8 @@ const AddComment = require('../../../Domains/comments/entities/AddComment');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 
 describe('CommentRepositoryPostgres', () => {
   it('should be instance of CommentRepository domain', () => {
@@ -115,7 +117,7 @@ describe('CommentRepositoryPostgres', () => {
         const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
         // Action & Assert
-        await expect(commentRepositoryPostgres.verifyCommentOwner({id: 'comment-123', owner: 'dicoding-tidak-ada'})).rejects.toThrowError();
+        await expect(commentRepositoryPostgres.verifyCommentOwner({id: 'comment-123', owner: 'dicoding-tidak-ada'})).rejects.toThrowError(new AuthorizationError('Anda tidak berhak mengakses resource ini'));
       });
 
       it('should not throw error when comment owner is valid', async () => {
@@ -130,7 +132,7 @@ describe('CommentRepositoryPostgres', () => {
         await expect(commentRepositoryPostgres.verifyCommentOwner({
           id: 'comment-123',
           owner: 'dicoding',
-        })).resolves.not.toThrowError();
+        })).resolves.not.toThrowError(AuthorizationError);
       });
     });
     describe('verifyCommentIsExistById function', () => {
@@ -140,7 +142,7 @@ describe('CommentRepositoryPostgres', () => {
         const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
         // Action & Assert
-        await expect(commentRepositoryPostgres.verifyCommentIsExistById('comment-123')).rejects.toThrowError();
+        await expect(commentRepositoryPostgres.verifyCommentIsExistById('comment-123')).rejects.toThrowError(new NotFoundError('Komentar tidak ditemukan'));
       });
 
       it('should not throw error when comment is exist', async () => {
@@ -152,7 +154,7 @@ describe('CommentRepositoryPostgres', () => {
         const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
         // Action & Assert
-        await expect(commentRepositoryPostgres.verifyCommentIsExistById('comment-123')).resolves.not.toThrowError();
+        await expect(commentRepositoryPostgres.verifyCommentIsExistById('comment-123')).resolves.not.toThrowError(NotFoundError);
       });
     });
 

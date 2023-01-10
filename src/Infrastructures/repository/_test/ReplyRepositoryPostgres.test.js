@@ -8,6 +8,7 @@ const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
 const AddReply = require('../../../Domains/replies/entities/AddReply');
 const AddedReply = require('../../../Domains/replies/entities/AddedReply');
 const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 
 describe('ReplyRepositoryPostgres', () => {
   it('should be instance of ReplyRepository domain', () => {
@@ -60,9 +61,33 @@ describe('ReplyRepositoryPostgres', () => {
       });
     });
 
+    describe('verifyAvailableReplyById function', () => {
+      it('should throw NotFoundError when reply not available', async () => {
+        // Arrange
+        const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+        // Action & Assert
+        await expect(replyRepositoryPostgres.verifyAvailableReplyById('reply-123')).rejects.toThrowError(new NotFoundError('Reply tidak ditemukan'));
+      });
+      it('should not throw NotFoundError when reply available', async () => {
+        // Arrange
+        const addReply = new AddReply({
+          content: 'reply content',
+          owner: 'user-123',
+          comment: 'comment-123',
+          thread: 'thread-123',
+        });
+        const fakeIdGenerator = () => '123';
+        const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+        await replyRepositoryPostgres.addReply(addReply);
+
+        // Action & Assert
+        await expect(replyRepositoryPostgres.verifyAvailableReplyById('reply-123')).resolves.not.toThrowError(NotFoundError);
+      });
+    });
+
     describe('softDeleteReplyById function', () => {
       it('should soft delete reply by id correctly', async () => {
-        // Arrange
         // Arrange
         const addReply = new AddReply({
           content: 'reply content',
@@ -101,7 +126,7 @@ describe('ReplyRepositoryPostgres', () => {
         await expect(replyRepositoryPostgres.verifyReplyOwner({
           id: 'reply-123',
           owner: 'user-123',
-        })).resolves.not.toThrowError();
+        })).resolves.not.toThrowError(AuthorizationError);
       });
 
       it('should throw error when reply owner is not verified', async () => {

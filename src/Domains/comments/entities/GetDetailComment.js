@@ -15,7 +15,7 @@ class GetDetailComment {
       throw new Error('GET_DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof id !== 'string' || typeof content !== 'string' || typeof username !== 'string' || typeof updated_at !== 'string' || typeof is_deleted !== 'boolean') {
+    if (typeof id !== 'string' || typeof content !== 'string' || typeof username !== 'string' || !(updated_at instanceof Date) || typeof is_deleted !== 'boolean') {
       throw new Error('GET_DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }

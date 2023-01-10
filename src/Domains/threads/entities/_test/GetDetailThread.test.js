@@ -7,19 +7,19 @@ describe('a GetDetailThread entities', () => {
       id: 'thread-123',
       title: 'thread title',
       body: 'thread body',
-      owner: 'user-123',
+      owner: new Date(),
     };
     const payload2 = {
       title: 'thread title',
       body: 'thread body',
       owner: 'user-123',
-      updated_at: '2022',
+      updated_at: new Date(),
     };
     const payload3 = {
       id: 'thread-123',
       body: 'thread body',
       owner: 'user-123',
-      updated_at: '2022',
+      updated_at: new Date(),
     };
 
     // Action and Assert
@@ -35,7 +35,7 @@ describe('a GetDetailThread entities', () => {
       title: 'thread title',
       body: 'thread body',
       username: 'user-123',
-      updated_at: '2022',
+      updated_at: new Date(),
     };
     const payload2 = {
       id: 'thread-123',
@@ -65,7 +65,7 @@ describe('a GetDetailThread entities', () => {
       title: 'thread title',
       body: 'thread body',
       username: 'user-123',
-      updated_at: '2022',
+      updated_at: new Date(),
     };
 
     // Action

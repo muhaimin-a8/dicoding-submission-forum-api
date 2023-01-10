@@ -1,8 +1,8 @@
-const AddComment = require('../../../Domains/comments/entities/AddComment');
-const AddedComment = require('../../../Domains/comments/entities/AddedComment');
-const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const AddComment = require('../../../../Domains/comments/entities/AddComment');
+const AddedComment = require('../../../../Domains/comments/entities/AddedComment');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
 const AddCommentUseCase = require('../AddCommentUseCase');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 
 describe('AddCommentUseCase', () => {
   it('should orchestrating the add comment action correctly', async () => {
@@ -24,7 +24,11 @@ describe('AddCommentUseCase', () => {
 
     /* mocking needed function */
     mockThreadRepository.verifyAvailableThreadById = jest.fn().mockImplementation(() => Promise.resolve());
-    mockCommentRepository.addComment = jest.fn().mockImplementation(() => Promise.resolve(expectedAddedComment));
+    mockCommentRepository.addComment = jest.fn().mockImplementation(() => Promise.resolve(new AddedComment({
+      id: 'comment-123',
+      content: useCasePayload.content,
+      owner: useCasePayload.owner,
+    })));
 
     /* creating use case instance */
     const addCommentUseCase = new AddCommentUseCase({
