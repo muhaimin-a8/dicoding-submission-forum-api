@@ -30,7 +30,7 @@ describe('ReplyRepositoryPostgres', () => {
     });
 
     beforeEach(async () => {
-      await UsersTableTestHelper.addUser({id: 'user-123'});
+      await UsersTableTestHelper.addUser({id: 'user-123', username: 'dicoding'});
       await TheadsTableTestHelper.addThread({id: 'thread-123'});
       await CommentsTableTestHelper.addComment({id: 'comment-123'});
     });
@@ -152,25 +152,27 @@ describe('ReplyRepositoryPostgres', () => {
     describe('getDetailReplyByCommentId function', () => {
       it('should return detail reply by comment id correctly', async () => {
         // Arrange
-        const addReply = new AddReply({
+        const date = new Date();
+        await RepliesTableTestHelper.addReply({
+          id: 'reply-123',
           content: 'reply content',
           owner: 'user-123',
           comment: 'comment-123',
-          thread: 'thread-123',
+          updated_at: date,
         });
-        const fakeIdGenerator = () => '123';
-        const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
-        await replyRepositoryPostgres.addReply(addReply);
+
+        const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
         // Action
         const detailReply = await replyRepositoryPostgres.getDetailReplyByCommentId('comment-123');
 
         // Assert
         expect(detailReply).toHaveLength(1);
-        expect(detailReply[0].id).toBeDefined();
-        expect(detailReply[0].content).toBeDefined();
-        expect(detailReply[0].username).toBeDefined();
-        expect(detailReply[0].date).toBeDefined();
+        expect(detailReply[0].id).toEqual('reply-123');
+        expect(detailReply[0].content).toEqual('reply content');
+        expect(detailReply[0].username).toEqual('dicoding');
+        expect(detailReply[0].date).toBeInstanceOf(Date);
+        expect(detailReply[0].date).toEqual(date);
       });
     });
   });
