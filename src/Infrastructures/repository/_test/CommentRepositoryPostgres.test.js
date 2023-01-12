@@ -161,19 +161,15 @@ describe('CommentRepositoryPostgres', () => {
     describe('getDetailCommentsByThreadId function', () => {
       it('should return detail comments correctly', async () => {
         // Arrange
-        await UsersTableTestHelper.addUser({id: 'dicoding'});
-        await ThreadsTableTestHelper.addThread({id: 'thread-123', owner: 'dicoding'});
+        const date = new Date();
+        await UsersTableTestHelper.addUser({id: 'user-123', username: 'dicoding'});
+        await ThreadsTableTestHelper.addThread({id: 'thread-123', owner: 'user-123'});
         await CommentsTableTestHelper.addComment({
           id: 'comment-123',
-          owner: 'dicoding',
+          owner: 'user-123',
           content: 'comment content',
           thread: 'thread-123',
-        });
-        await CommentsTableTestHelper.addComment({
-          id: 'comment-1234',
-          owner: 'dicoding',
-          content: 'comment content',
-          thread: 'thread-123',
+          updated_at: date,
         });
         const fakeIdGenerator = () => '123';
         const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
@@ -182,7 +178,11 @@ describe('CommentRepositoryPostgres', () => {
         const detailComments = await commentRepositoryPostgres.getDetailCommentsByThreadId('thread-123');
 
         // Assert
-        expect(detailComments).toHaveLength(2);
+        expect(detailComments).toHaveLength(1);
+        expect(detailComments[0].id).toEqual('comment-123');
+        expect(detailComments[0].content).toEqual('comment content');
+        expect(detailComments[0].username).toEqual('dicoding');
+        expect(detailComments[0].date).toEqual(date);
       });
     });
   });
