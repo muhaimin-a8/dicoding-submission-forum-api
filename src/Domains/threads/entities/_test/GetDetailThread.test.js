@@ -13,13 +13,13 @@ describe('a GetDetailThread entities', () => {
       title: 'thread title',
       body: 'thread body',
       owner: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
     };
     const payload3 = {
       id: 'thread-123',
       body: 'thread body',
       owner: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
     };
 
     // Action and Assert
@@ -35,21 +35,21 @@ describe('a GetDetailThread entities', () => {
       title: 'thread title',
       body: 'thread body',
       username: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
     };
     const payload2 = {
       id: 'thread-123',
       title: 123,
       body: 'thread body',
       username: 'user-123',
-      updated_at: '2022',
+      created_at: '2022',
     };
     const payload3 = {
       id: 'thread-123',
       title: 'thread title',
       body: 123,
       username: 'user-123',
-      updated_at: {},
+      created_at: {},
     };
 
     // Action and Assert
@@ -65,7 +65,7 @@ describe('a GetDetailThread entities', () => {
       title: 'thread title',
       body: 'thread body',
       username: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
     };
 
     // Action
@@ -76,6 +76,6 @@ describe('a GetDetailThread entities', () => {
     expect(getDetailThread.title).toEqual(payload.title);
     expect(getDetailThread.body).toEqual(payload.body);
     expect(getDetailThread.username).toEqual(payload.username);
-    expect(getDetailThread.date).toEqual(payload.updated_at);
+    expect(getDetailThread.date).toEqual(payload.created_at);
   });
 });

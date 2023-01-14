@@ -169,7 +169,7 @@ describe('CommentRepositoryPostgres', () => {
           owner: 'user-123',
           content: 'comment content',
           thread: 'thread-123',
-          updated_at: date,
+          created_at: date,
         });
         const fakeIdGenerator = () => '123';
         const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);

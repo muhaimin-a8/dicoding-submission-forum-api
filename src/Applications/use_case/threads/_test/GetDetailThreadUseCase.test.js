@@ -23,20 +23,20 @@ describe('GetDetailThreadUseCase', () => {
       title: 'thread title',
       body: 'thread body',
       username: 'user-123',
-      updated_at: date,
+      created_at: date,
     })));
     mockCommentRepository.getDetailCommentsByThreadId = jest.fn(() => Promise.resolve([new GetDetailComment({
       id: commentId,
       content: 'comment content',
       username: 'user-123',
-      updated_at: date,
+      created_at: date,
       is_deleted: false,
     })]));
     mockReplyRepository.getDetailReplyByCommentId = jest.fn(() => Promise.resolve([new GetDetailReply({
       id: 'reply-123',
       content: 'reply content',
       username: 'user-123',
-      updated_at: date,
+      created_at: date,
       is_deleted: false,
     })]));
 

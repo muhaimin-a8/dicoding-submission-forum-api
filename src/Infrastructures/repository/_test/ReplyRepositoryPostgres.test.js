@@ -158,7 +158,7 @@ describe('ReplyRepositoryPostgres', () => {
           content: 'reply content',
           owner: 'user-123',
           comment: 'comment-123',
-          updated_at: date,
+          created_at: date,
         });
 
         const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});

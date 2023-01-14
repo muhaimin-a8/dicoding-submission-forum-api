@@ -7,18 +7,18 @@ describe('a GetDetailComment entities', () => {
       id: 'comment-123',
       content: 'comment content',
       username: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
     };
     const payload2 = {
       content: 'comment content',
       username: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
       is_deleted: false,
     };
     const payload3 = {
       id: 'comment-123',
       username: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
       is_deleted: false,
     };
 
@@ -34,21 +34,21 @@ describe('a GetDetailComment entities', () => {
       id: 123,
       content: 'comment content',
       username: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
       is_deleted: false,
     };
     const payload2 = {
       id: 'comment-123',
       content: 123,
       username: 'user-123',
-      updated_at: '2022-01-01T07:07:07.070Z',
+      created_at: '2022-01-01T07:07:07.070Z',
       is_deleted: false,
     };
     const payload3 = {
       id: 'comment-123',
       content: 'comment content',
       username: 123,
-      updated_at: 123,
+      created_at: 123,
       is_deleted: false,
     };
 
@@ -64,14 +64,14 @@ describe('a GetDetailComment entities', () => {
       id: 'comment-123',
       content: 'comment content',
       username: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
       is_deleted: false,
     };
     const payload2 = {
       id: 'comment-123',
       content: 'comment content',
       username: 'user-123',
-      updated_at: new Date(),
+      created_at: new Date(),
       is_deleted: true,
     };
 
@@ -83,11 +83,11 @@ describe('a GetDetailComment entities', () => {
     expect(getDetailComment.id).toEqual(payload.id);
     expect(getDetailComment.content).toEqual(payload.content);
     expect(getDetailComment.username).toEqual(payload.username);
-    expect(getDetailComment.date).toEqual(payload.updated_at);
+    expect(getDetailComment.date).toEqual(payload.created_at);
 
     expect(getDetailComment2.id).toEqual(payload2.id);
     expect(getDetailComment2.content).toEqual('**komentar telah dihapus**');
     expect(getDetailComment2.username).toEqual(payload2.username);
-    expect(getDetailComment2.date).toEqual(payload2.updated_at);
+    expect(getDetailComment2.date).toEqual(payload2.created_at);
   });
 });
