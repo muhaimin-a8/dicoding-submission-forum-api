@@ -80,20 +80,22 @@ describe('ThreadRepositoryPostgres', () => {
           title: 'new thread',
           body: 'new thread body',
           owner: 'user-123',
-          updated_at: date,
+          created_at: date,
         });
+        const expectedThread = {
+          id: 'thread-123',
+          title: 'new thread',
+          body: 'new thread body',
+          date: date,
+          username: 'dicoding',
+        };
         const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
         // Action
         const detailThread = await threadRepositoryPostgres.getDetailThreadById('thread-123');
 
         // Assert
-        expect(detailThread.id).toEqual('thread-123');
-        expect(detailThread.title).toEqual('new thread');
-        expect(detailThread.body).toEqual('new thread body');
-        expect(detailThread.date).toBeInstanceOf(Date);
-        expect(detailThread.date).toEqual(date);
-        expect(detailThread.username).toEqual('dicoding');
+        expect(detailThread).toEqual(expectedThread);
       });
     });
   });
