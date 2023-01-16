@@ -89,5 +89,20 @@ describe('ToggleCommentLikeRepositoryPostgres', () => {
         })).resolves.not.toThrowError();
       });
     });
+
+    describe('getLikesCountByCommentId', () => {
+      it('should return likes count', async () => {
+        // Arrange
+        await CommentLikesTableTestHelper.addLike({});
+        await CommentLikesTableTestHelper.addLike({id: 'comment-like-321'});
+        const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(pool, {});
+
+        // Action
+        const likesCount = await commentLikeRepositoryPostgres.getLikesCountByCommentId('comment-123');
+
+        // Assert
+        expect(likesCount).toEqual(2);
+      });
+    });
   });
 });
