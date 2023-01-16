@@ -13,17 +13,7 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
-    is_liked: {
-      type: 'BOOLEAN',
-      notNull: true,
-      default: true,
-    },
     created_at: {
-      type: 'TIMESTAMP',
-      notNull: true,
-      default: pgm.func('current_timestamp'),
-    },
-    updated_at: {
       type: 'TIMESTAMP',
       notNull: true,
       default: pgm.func('current_timestamp'),

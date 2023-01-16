@@ -7,13 +7,11 @@ const CommentLikesTableTestHelper = {
     id = 'comment-likes-123',
     comment_id = 'comment-123',
     user_id = 'user-123',
-    is_liked = true,
     created_at = new Date(),
-    updated_at = new Date(),
   }) {
     const query = {
-      text: 'INSERT INTO user_comment_likes VALUES($1, $2, $3, $4, $5, $6)',
-      values: [id, comment_id, user_id, is_liked, created_at, updated_at],
+      text: 'INSERT INTO user_comment_likes VALUES($1, $2, $3, $4)',
+      values: [id, comment_id, user_id, created_at],
     };
 
     await pool.query(query);
