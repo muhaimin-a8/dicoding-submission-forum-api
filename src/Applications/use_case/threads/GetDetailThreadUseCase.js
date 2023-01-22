@@ -1,8 +1,9 @@
 class GetDetailThreadUseCase {
-  constructor({threadRepository, commentRepository, replyRepository}) {
+  constructor({threadRepository, commentRepository, replyRepository, commentLikesRepository}) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._commentLikesRepository = commentLikesRepository;
   }
 
   async execute(threadId) {
@@ -22,6 +23,7 @@ class GetDetailThreadUseCase {
       result.comments[i].replies = repliesNotMapped.map((reply) => {
         return {...reply};
       });
+      result.comments[i].likeCount = await this._commentLikesRepository.getLikesCountByCommentId(result.comments[i].id);
     }
     return result;
   }
